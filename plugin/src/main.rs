@@ -7,9 +7,13 @@ fn main() {
            WHERE a > b AND b < 100 \
            ORDER BY a DESC, b";
 
-let dialect = GenericDialect {}; // or AnsiDialect, or your own dialect ...
+    let dialect = GenericDialect {}; // or AnsiDialect, or your own dialect ...
 
-let ast = Parser::parse_sql(&dialect, sql).unwrap();
+    let ast = Parser::parse_sql(&dialect, sql).unwrap();
 
-println!("AST: {:?}", ast);
+    // Serialize it to a JSON string.
+    let j = serde_json::to_string(&ast).unwrap();
+
+    // Print, write to a file, or send to an HTTP server.
+    println!("{}", j);
 }
