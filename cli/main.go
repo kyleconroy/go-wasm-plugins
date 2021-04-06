@@ -50,7 +50,7 @@ func run() error {
 	// Compiling modules requires WebAssembly binary input, but the wasmtime
 	// package also supports converting the WebAssembly text format to the
 	// binary format.
-	wasm, err := os.ReadFile(filepath.Join("..", "plugin", "hello.wasm"))
+	wasm, err := os.ReadFile("plugin.wasm")
 	if err != nil {
 		return fmt.Errorf("read file: %w", err)
 	}

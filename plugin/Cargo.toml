@@ -1,0 +1,8 @@
+[package]
+name = "plugin"
+version = "0.1.0"
+authors = ["Kyle Conroy <kyle@conroy.org>"]
+edition = "2018"
+
+[dependencies]
+sqlparser = "0.9.0"
