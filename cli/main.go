@@ -6,9 +6,13 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	_ "embed"
 
 	wasmtime "github.com/bytecodealliance/wasmtime-go"
 )
+
+//go:embed plugin.wasm
+var wasm []byte
 
 // TODO: https://pkg.go.dev/github.com/bytecodealliance/wasmtime-go#example-package-Wasi
 
@@ -24,8 +28,13 @@ func run() error {
 	stdoutPath := filepath.Join(dir, "stdout")
 
 	engine := wasmtime.NewEngine()
-	store := wasmtime.NewStore(engine)
-	linker := wasmtime.NewLinker(store)
+	linker := wasmtime.NewLinker(engine)
+
+	// Link WASI
+	if err := linker.DefineWasi(); err != nil {
+		return fmt.Errorf("define wasi: %w", err)
+	}
+
 
 	// Configure WASI imports to write stdout into a file.
 	wasiConfig := wasmtime.NewWasiConfig()
@@ -33,41 +42,38 @@ func run() error {
 	wasiConfig.SetStdoutFile(stdoutPath)
 	wasiConfig.SetStderrFile(stderrPath)
 
-	// Set the version to the same as in the WAT.
-	wasi, err := wasmtime.NewWasiInstance(store, wasiConfig, "wasi_snapshot_preview1")
-	if err != nil {
-		return fmt.Errorf("new wasi instances: %w", err)
-	}
+	store := wasmtime.NewStore(engine)
+	store.SetWasi(wasiConfig)
 
-	// Link WASI
-	err = linker.DefineWasi(wasi)
-	if err != nil {
-		return fmt.Errorf("define wasi: %w", err)
-	}
+	// Set the version to the same as in the WAT.
+	// wasi, err := wasmtime.NewWasiInstance(store, wasiConfig, "wasi_snapshot_preview1")
+	// if err != nil {
+	// 	return fmt.Errorf("new wasi instances: %w", err)
+	// }
 
 	// Create our module
 	//
 	// Compiling modules requires WebAssembly binary input, but the wasmtime
 	// package also supports converting the WebAssembly text format to the
 	// binary format.
-	wasm, err := os.ReadFile("plugin.wasm")
-	if err != nil {
-		return fmt.Errorf("read file: %w", err)
-	}
+	// wasm, err := os.ReadFile("plugin.wasm")
+	// if err != nil {
+	// 	return fmt.Errorf("read file: %w", err)
+	// }
 
 	module, err := wasmtime.NewModule(store.Engine, wasm)
 	if err != nil {
 		return fmt.Errorf("define wasi: %w", err)
 	}
 
-	instance, err := linker.Instantiate(module)
+	instance, err := linker.Instantiate(store, module)
 	if err != nil {
 		return fmt.Errorf("define wasi: %w", err)
 	}
 
 	// Run the function
-	nom := instance.GetExport("_start").Func()
-	_, err = nom.Call()
+	nom := instance.GetExport(store, "_start").Func()
+	_, err = nom.Call(store)
 	if err != nil {
 		return fmt.Errorf("call: %w", err)
 	}

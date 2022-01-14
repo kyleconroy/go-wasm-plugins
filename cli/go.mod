@@ -1,5 +1,5 @@
 module github.com/kyleconroy/cli
 
-go 1.16
+go 1.17
 
-require github.com/bytecodealliance/wasmtime-go v0.26.0 // indirect
+require github.com/bytecodealliance/wasmtime-go v0.33.0 // indirect
