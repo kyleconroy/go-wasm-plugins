@@ -7,8 +7,14 @@ cli/plugin.wasm: plugin/src/main.rs plugin/Cargo.toml
 	cd plugin && cargo build --target wasm32-wasi
 	cp plugin/target/wasm32-wasi/debug/plugin.wasm cli/plugin.wasm
 
-cli/cli: cli/main.go wasmtime/target/release
-	cd cli && CGO_CFLAGS="-I/Users/kyle/projects/go-wasm-plugins/wasmtime/crates/c-api/wasm-c-api/include -I/Users/kyle/projects/go-wasm-plugins/wasmtime/crates/c-api/include" CGO_LDFLAGS="-L/Users/kyle/projects/go-wasm-plugins/wasmtime/target/release/ -lwasmtime" go build ./...
+cli/cli: cli/main.go /Users/kyle/go/pkg/mod/github.com/bytecodealliance/wasmtime-go@v0.33.0/build/macos-aarch64/libwasmtime.a
+	cd cli && go build .
+
+/Users/kyle/go/pkg/mod/github.com/bytecodealliance/wasmtime-go@v0.33.0/build/macos-aarch64/libwasmtime.a: /Users/kyle/go/pkg/mod/github.com/bytecodealliance/wasmtime-go@v0.33.0/build/macos-aarch64 ./wasmtime/target/release
+	sudo cp wasmtime/target/release/libwasmtime.a /Users/kyle/go/pkg/mod/github.com/bytecodealliance/wasmtime-go@v0.33.0/build/macos-aarch64
+
+/Users/kyle/go/pkg/mod/github.com/bytecodealliance/wasmtime-go@v0.33.0/build/macos-aarch64:
+	sudo mkdir -p /Users/kyle/go/pkg/mod/github.com/bytecodealliance/wasmtime-go@v0.33.0/build/macos-aarch64
 
 wasmtime/target/release: wasmtime
 	cd wasmtime && cargo build -p wasmtime-c-api --release
