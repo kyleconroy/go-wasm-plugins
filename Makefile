@@ -9,7 +9,7 @@ cli/plugin.wasm: plugin/src/main.rs plugin/Cargo.toml
 	cd plugin && cargo build --target wasm32-wasi
 	cp plugin/target/wasm32-wasi/debug/plugin.wasm cli/plugin.wasm
 
-cli/cli: cli/main.go ${GOMODCACHE}/github.com/bytecodealliance/wasmtime-go@v0.33.0/build/macos-aarch64/libwasmtime.a
+cli/cli: cli/plugin.wasm cli/main.go ${GOMODCACHE}/github.com/bytecodealliance/wasmtime-go@v0.33.0/build/macos-aarch64/libwasmtime.a
 	cd cli && go build .
 
 ${GOMODCACHE}/github.com/bytecodealliance/wasmtime-go@v0.33.0/build/macos-aarch64/libwasmtime.a: ${GOMODCACHE}/github.com/bytecodealliance/wasmtime-go@v0.33.0/build/macos-aarch64 ./wasmtime/target/release
