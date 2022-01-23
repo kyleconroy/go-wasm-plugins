@@ -11,12 +11,15 @@ import (
 	wasmtime "github.com/bytecodealliance/wasmtime-go"
 )
 
-//go:embed plugin.wasm
-var wasm []byte
+//go:embed plugin_rust.wasm
+var wasmRust []byte
+
+//go:embed plugin_go.wasm
+var wasmGo []byte
 
 // TODO: https://pkg.go.dev/github.com/bytecodealliance/wasmtime-go#example-package-Wasi
 
-func run() error {
+func run(wasm []byte) error {
 	dir, err := ioutil.TempDir("", "out")
 	if err != nil {
 		return fmt.Errorf("temp dir: %w", err)
@@ -89,7 +92,13 @@ func run() error {
 }
 
 func main() {
-	if e := run(); e != nil {
+	fmt.Println("rust")
+	if e := run(wasmRust); e != nil {
 		log.Fatal(e)
 	}
+	fmt.Println("go")
+	if e := run(wasmGo); e != nil {
+		log.Fatal(e)
+	}
+
 }

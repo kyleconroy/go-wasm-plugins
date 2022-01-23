@@ -1,2 +1,4 @@
 cli/cli
 wasmtime
+*.wasm
+*.zip
