@@ -21,7 +21,7 @@ plugin_go/hello/hello.pb.go: plugin_go/hello/hello.proto
 		hello/hello.proto
 
 cli/plugin_go.wasm: plugin_go/hello/hello.pb.go plugin_go/main.go
-	cd plugin_go && tinygo build -o plugin.wasm -wasm-abi=generic -target=wasi
+	cd plugin_go && tinygo build -o plugin.wasm -wasm-abi=generic -target=wasi -gc=leaking -scheduler=asyncify
 	cp plugin_go/plugin.wasm cli/plugin_go.wasm
 
 cli/cli: cli/plugin_rust.wasm cli/plugin_go.wasm cli/main.go ${GOMODCACHE}/github.com/bytecodealliance/wasmtime-go@v0.33.0/build/macos-aarch64/libwasmtime.a

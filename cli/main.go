@@ -1,12 +1,12 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
-	_ "embed"
 
 	wasmtime "github.com/bytecodealliance/wasmtime-go"
 )
@@ -37,7 +37,6 @@ func run(wasm []byte) error {
 	if err := linker.DefineWasi(); err != nil {
 		return fmt.Errorf("define wasi: %w", err)
 	}
-
 
 	// Configure WASI imports to write stdout into a file.
 	wasiConfig := wasmtime.NewWasiConfig()
