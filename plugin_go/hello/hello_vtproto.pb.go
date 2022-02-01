@@ -6,17 +6,17 @@ package hello
 
 import (
 	fmt "fmt"
-	// protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
 	bits "math/bits"
 )
 
-// const (
-// 	// Verify that this generated code is sufficiently up-to-date.
-// 	_ = protoimpl.EnforceVersion(20 - protoimpl.MinVersion)
-// 	// Verify that runtime/protoimpl is sufficiently up-to-date.
-// 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
-// )
+const (
+	// Verify that this generated code is sufficiently up-to-date.
+	_ = protoimpl.EnforceVersion(20 - protoimpl.MinVersion)
+	// Verify that runtime/protoimpl is sufficiently up-to-date.
+	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
+)
 
 func (m *HelloRequest) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {

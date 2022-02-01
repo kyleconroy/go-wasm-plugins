@@ -9,16 +9,16 @@ package hello
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
+	// reflect "reflect"
 	sync "sync"
 )
 
-// const (
-// 	// Verify that this generated code is sufficiently up-to-date.
-// 	_ = protoimpl.EnforceVersion(20 - protoimpl.MinVersion)
-// 	// Verify that runtime/protoimpl is sufficiently up-to-date.
-// 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
-// )
+const (
+	// Verify that this generated code is sufficiently up-to-date.
+	_ = protoimpl.EnforceVersion(20 - protoimpl.MinVersion)
+	// Verify that runtime/protoimpl is sufficiently up-to-date.
+	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
+)
 
 // The request message containing the user's name.
 type HelloRequest struct {
@@ -156,7 +156,7 @@ var file_hello_hello_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_hello_hello_proto_init() }
+// func init() { file_hello_hello_proto_init() }
 func file_hello_hello_proto_init() {
 	if File_hello_hello_proto != nil {
 		return
@@ -188,9 +188,9 @@ func file_hello_hello_proto_init() {
 		}
 	}
 	type x struct{}
-	out := protoimpl.TypeBuilder{
+	builder := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
+			GoPackagePath: "github.com/kyleconroy/wasm-greeter/hello",
 			RawDescriptor: file_hello_hello_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   2,
@@ -200,7 +200,9 @@ func file_hello_hello_proto_init() {
 		GoTypes:           file_hello_hello_proto_goTypes,
 		DependencyIndexes: file_hello_hello_proto_depIdxs,
 		MessageInfos:      file_hello_hello_proto_msgTypes,
-	}.Build()
+	}
+	out := builder.Build()
+	return
 	File_hello_hello_proto = out.File
 	file_hello_hello_proto_rawDesc = nil
 	file_hello_hello_proto_goTypes = nil

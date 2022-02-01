@@ -3,18 +3,20 @@ package main
 import (
 	"fmt"
 
-	"github.com/kyleconroy/wasm-greeter/hello"
+	"github.com/mailru/easyjson"
+
+	"github.com/kyleconroy/wasm-json-greeter/hello"
 )
 
 func main() {
-	fmt.Println("HELLO WORLD")
+	fmt.Println("HELLO JSON")
 	msg := hello.HelloRequest{Name: "foo"}
-	blob, err := msg.MarshalVT()
+	blob, err := easyjson.Marshal(msg)
 	if err != nil {
 		fmt.Println(err.Error())
 		return
 	}
-	if err := msg.UnmarshalVT(blob); err != nil {
+	if err := easyjson.Unmarshal(blob, &msg); err != nil {
 		fmt.Println(err.Error())
 		return
 	}
